@@ -1,0 +1,31 @@
+clc;
+clear;
+trian_set=cell(1);
+train_num=1;
+tot=0;
+img_set=cell(1,1);
+label_set=cell(1,1);
+for i=3:3
+    label=load_untouch_nii(['./sa/training_sa_crop_pat',int2str(i),'-label.nii.gz']);
+    labelmy=load_untouch_nii(['/home/ljp/code/caffe-3d/examples/cmr/result/training_sa_crop_pat',int2str(i),'-labelOur.nii.gz']);
+    labelmy=load_untouch_nii(['/home/ljp/code/caffe-3d/examples/cmr/result/training_sa_crop_pat',int2str(i),'-labelOurc2.nii.gz']);
+    label=label.img;
+    labelmy=labelmy.img;
+    label(label==1)=0;
+    labelmy(labelmy>0.1)=2;
+    labelmy=uint16(labelmy);
+
+    se=ones(5,5,5);
+    %label2=imdilate(labelmy,se);
+    label2=labelmy;
+    a=sum(sum(sum((label2==2)&(label==2))));
+    b=sum(sum(sum(label==2)));
+    a/b
+    dice=2*sum(sum(sum((label2+label)==4)))/(sum(sum(sum(label2==2)))+sum(sum(sum(label==2))))
+    a=sum(sum(sum((label2==2))));
+    b=sum(sum(sum(label==2)));
+    a/b
+    labelmy=load_untouch_nii(['/home/ljp/code/caffe-3d/examples/cmr/result/training_sa_crop_pat',int2str(i),'-labelOur.nii.gz']);
+    labelmy.img(label2==1)=1;
+    save_untouch_nii(labelmy,['/home/ljp/code/caffe-3d/examples/cmr/result/training_sa_crop_pat',int2str(i),'-labelOurB.nii.gz']);
+end

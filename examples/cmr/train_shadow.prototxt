@@ -1,0 +1,255 @@
+name: "ResNet"
+layer {
+  name: "data"
+  type: "VideoDataSeg"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  video_data_param {
+    root_folder: ""
+    source: "/home/ljp/code/caffe-3d/examples/cmr/train.txt"
+    batch_size: 1
+    shuffle: true
+    new_length: 16
+  }
+}
+layer {
+  name: "data"
+  type: "VideoDataSeg"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  video_data_param {
+    root_folder: ""
+    source: "./test.txt"
+    #Just setup the network. No real online testing
+    batch_size: 1
+    shuffle: false
+    new_length: 16
+  }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  convolution_param {
+    num_output: 64
+    kernel_size:3
+    stride:1
+    pad:2
+    dilation:2
+    bias_term: false
+    engine:CAFFE
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "conv1_bn"
+  type: "BatchNorm"
+  bottom: "conv1"
+  top: "conv1"
+  batch_norm_param { use_global_stats: false }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+	bottom: "conv1"
+	top: "conv1"
+	name: "scale_conv1"
+	type: "Scale"
+	scale_param {
+		bias_term: true
+	}
+}
+
+layer {
+  name: "conv1_relu"
+  type: "ReLU"
+  bottom: "conv1"
+  top: "conv1"
+}
+
+
+layer {
+  name: "conv11"
+  type: "Convolution"
+  bottom: "conv1"
+  top: "conv11"
+  convolution_param {
+    num_output: 64
+    kernel_size:3
+    stride:1
+    pad:2
+    dilation:2
+    bias_term: false
+    engine:CAFFE
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "conv11_bn"
+  type: "BatchNorm"
+  bottom: "conv11"
+  top: "conv11"
+  batch_norm_param { use_global_stats: false }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+	bottom: "conv11"
+	top: "conv11"
+	name: "scale_conv11"
+	type: "Scale"
+	scale_param {
+		bias_term: true
+	}
+}
+
+layer {
+  name: "conv11_relu"
+  type: "ReLU"
+  bottom: "conv11"
+  top: "conv11"
+}
+
+layer {
+  name: "conv12"
+  type: "Convolution"
+  bottom: "conv11"
+  top: "conv12"
+  convolution_param {
+    num_output: 64
+    kernel_size:3
+    stride:1
+    pad:2
+    dilation:2
+    bias_term: false
+    engine:CAFFE
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "conv12_bn"
+  type: "BatchNorm"
+  bottom: "conv12"
+  top: "conv12"
+  batch_norm_param { use_global_stats: false }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+	bottom: "conv12"
+	top: "conv12"
+	name: "scale_conv12"
+	type: "Scale"
+	scale_param {
+		bias_term: true
+	}
+}
+
+layer {
+  name: "conv12_relu"
+  type: "ReLU"
+  bottom: "conv12"
+  top: "conv12"
+}
+
+
+layer {
+  name: "conv13"
+  type: "Convolution"
+  bottom: "conv12"
+  top: "conv13"
+  convolution_param {
+    num_output: 64
+    kernel_size:3
+    stride:1
+    pad:2
+    dilation:2
+    bias_term: false
+    engine:CAFFE
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "conv13_bn"
+  type: "BatchNorm"
+  bottom: "conv13"
+  top: "conv13"
+  batch_norm_param { use_global_stats: false }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+	bottom: "conv13"
+	top: "conv13"
+	name: "scale_conv13"
+	type: "Scale"
+	scale_param {
+		bias_term: true
+	}
+}
+
+layer {
+  name: "conv13_relu"
+  type: "ReLU"
+  bottom: "conv13"
+  top: "conv13"
+}
+
+
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "conv13"
+  bottom: "label"
+  top: "loss"
+}
+layer {
+  name: "accuracy5"
+  type: "Accuracy"
+  bottom: "conv13"
+  bottom: "label"
+  top: "accuracy5"
+}

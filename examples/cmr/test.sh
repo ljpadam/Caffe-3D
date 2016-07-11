@@ -1,0 +1,1 @@
+/home/ljp/code/caffe-3d/build/tools/caffe.bin test --model=/home/ljp/code/caffe-3d/examples/cmr/train_full25_drop2_multiscale.prototxt --weights=/home/ljp/hd1/caffemodel/caffe3d/multi/89/cmr_iter_2400.caffemodel  --iterations=2 --gpu=0

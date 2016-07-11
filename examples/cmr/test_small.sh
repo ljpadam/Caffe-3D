@@ -1,0 +1,1 @@
+/home/ljp/code/caffe-3d/build/tools/caffe.bin test --model=/home/ljp/code/caffe-3d/examples/cmr/train_small_res.prototxt --weights=/home/ljp/hd1/caffemodel/caffe3d/small/cmr_iter_250000.caffemodel  --iterations=264 --gpu=0

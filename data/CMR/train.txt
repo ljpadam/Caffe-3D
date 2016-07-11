@@ -1,0 +1,2 @@
+/home/ljp/hd1/CMR/test/1 0 /home/ljp/hd1/CMR/test/1
+/home/ljp/hd1/CMR/test/2 0 /home/ljp/hd1/CMR/test/2
