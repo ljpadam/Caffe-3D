@@ -1,0 +1,524 @@
+I0603 15:06:14.566859  3238 caffe.cpp:185] Using GPUs 0
+I0603 15:06:14.639914  3238 caffe.cpp:190] GPU 0: GeForce GTX TITAN X
+I0603 15:06:14.755589  3238 solver.cpp:48] Initializing solver from parameters: 
+test_iter: 200
+test_iter: 200
+test_interval: 1000
+base_lr: 0.001
+display: 20
+max_iter: 60000
+lr_policy: "step"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.005
+stepsize: 20000
+snapshot: 5000
+snapshot_prefix: "examples/c3d_ucf101/c3d_ucf101"
+solver_mode: GPU
+device_id: 0
+net: "examples/c3d_ucf101/c3d_ucf101_train_test.prototxt"
+test_state {
+  stage: "test-on-train"
+}
+test_state {
+  stage: "test-on-val"
+}
+I0603 15:06:14.755738  3238 solver.cpp:91] Creating training net from net file: examples/c3d_ucf101/c3d_ucf101_train_test.prototxt
+I0603 15:06:14.756441  3238 net.cpp:313] The NetState phase (0) differed from the phase (1) specified by a rule in layer data
+I0603 15:06:14.756448  3238 net.cpp:313] The NetState phase (0) differed from the phase (1) specified by a rule in layer data
+I0603 15:06:14.756479  3238 net.cpp:313] The NetState phase (0) differed from the phase (1) specified by a rule in layer prob
+I0603 15:06:14.756481  3238 net.cpp:313] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0603 15:06:14.756484  3238 net.cpp:313] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+I0603 15:06:14.756693  3238 net.cpp:49] Initializing net from parameters: 
+name: "c3d_ucf101"
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data"
+  type: "VideoData"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 112
+    mean_file: "examples/c3d_ucf101/ucf101_train_mean.binaryproto"
+  }
+  video_data_param {
+    source: "examples/c3d_ucf101/c3d_ucf101_train_split1.txt"
+    batch_size: 15
+    shuffle: true
+    new_length: 16
+    new_height: 128
+    new_width: 171
+  }
+}
+layer {
+  name: "conv1a"
+  type: "NdConvolution"
+  bottom: "data"
+  top: "conv1a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+    pad_shape {
+      dim: 1
+      dim: 1
+      dim: 1
+    }
+    kernel_shape {
+      dim: 3
+      dim: 3
+      dim: 3
+    }
+    stride_shape {
+      dim: 1
+      dim: 1
+      dim: 1
+    }
+  }
+}
+layer {
+  name: "relu1a"
+  type: "ReLU"
+  bottom: "conv1a"
+  top: "conv1a"
+}
+layer {
+  name: "pool1"
+  type: "NdPooling"
+  bottom: "conv1a"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_shape {
+      dim: 1
+      dim: 2
+      dim: 2
+    }
+    stride_shape {
+      dim: 1
+      dim: 2
+      dim: 2
+    }
+  }
+}
+layer {
+  name: "conv2a"
+  type: "NdConvolution"
+  bottom: "pool1"
+  top: "conv2a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+    pad_shape {
+      dim: 1
+      dim: 1
+      dim: 1
+    }
+    kernel_shape {
+      dim: 3
+      dim: 3
+      dim: 3
+    }
+    stride_shape {
+      dim: 1
+      dim: 1
+      dim: 1
+    }
+  }
+}
+layer {
+  name: "relu2a"
+  type: "ReLU"
+  bottom: "conv2a"
+  top: "conv2a"
+}
+layer {
+  name: "pool2"
+  type: "NdPooling"
+  bottom: "conv2a"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_shape {
+      dim: 2
+      dim: 2
+      dim: 2
+    }
+    stride_shape {
+      dim: 2
+      dim: 2
+      dim: 2
+    }
+  }
+}
+layer {
+  name: "conv3a"
+  type: "NdConvolution"
+  bottom: "pool2"
+  top: "conv3a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+    pad_shape {
+      dim: 1
+      dim: 1
+      dim: 1
+    }
+    kernel_shape {
+      dim: 3
+      dim: 3
+      dim: 3
+    }
+    stride_shape {
+      dim: 1
+      dim: 1
+      dim: 1
+    }
+  }
+}
+layer {
+  name: "relu3a"
+  type: "ReLU"
+  bottom: "conv3a"
+  top: "conv3a"
+}
+layer {
+  name: "pool3"
+  type: "NdPooling"
+  bottom: "conv3a"
+  top: "pool3"
+  pooling_param {
+    pool: MAX
+    kernel_shape {
+      dim: 2
+      dim: 2
+      dim: 2
+    }
+    stride_shape {
+      dim: 2
+      dim: 2
+      dim: 2
+    }
+  }
+}
+layer {
+  name: "conv4a"
+  type: "NdConvolution"
+  bottom: "pool3"
+  top: "conv4a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+    pad_shape {
+      dim: 1
+      dim: 1
+      dim: 1
+    }
+    kernel_shape {
+      dim: 3
+      dim: 3
+      dim: 3
+    }
+    stride_shape {
+      dim: 1
+      dim: 1
+      dim: 1
+    }
+  }
+}
+layer {
+  name: "relu4a"
+  type: "ReLU"
+  bottom: "conv4a"
+  top: "conv4a"
+}
+layer {
+  name: "pool4"
+  type: "NdPooling"
+  bottom: "conv4a"
+  top: "pool4"
+  pooling_param {
+    pool: MAX
+    kernel_shape {
+      dim: 2
+      dim: 2
+      dim: 2
+    }
+    stride_shape {
+      dim: 2
+      dim: 2
+      dim: 2
+    }
+  }
+}
+layer {
+  name: "conv5a"
+  type: "NdConvolution"
+  bottom: "pool4"
+  top: "conv5a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+    pad_shape {
+      dim: 1
+      dim: 1
+      dim: 1
+    }
+    kernel_shape {
+      dim: 3
+      dim: 3
+      dim: 3
+    }
+    stride_shape {
+      dim: 1
+      dim: 1
+      dim: 1
+    }
+  }
+}
+layer {
+  name: "relu5a"
+  type: "ReLU"
+  bottom: "conv5a"
+  top: "conv5a"
+}
+layer {
+  name: "pool5"
+  type: "NdPooling"
+  bottom: "conv5a"
+  top: "pool5"
+  pooling_param {
+    pool: MAX
+    kernel_shape {
+      dim: 2
+      dim: 2
+      dim: 2
+    }
+    stride_shape {
+      dim: 2
+      dim: 2
+      dim: 2
+    }
+  }
+}
+layer {
+  name: "fc6"
+  type: "InnerProduct"
+  bottom: "pool5"
+  top: "fc6"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2048
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu6"
+  type: "ReLU"
+  bottom: "fc6"
+  top: "fc6"
+}
+layer {
+  name: "drop6"
+  type: "Dropout"
+  bottom: "fc6"
+  top: "fc6"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc7"
+  type: "InnerProduct"
+  bottom: "fc6"
+  top: "fc7"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 2048
+    weight_filler {
+      type: "gaussian"
+      std: 0.005
+    }
+    bias_filler {
+      type: "constant"
+      value: 1
+    }
+  }
+}
+layer {
+  name: "relu7"
+  type: "ReLU"
+  bottom: "fc7"
+  top: "fc7"
+}
+layer {
+  name: "drop7"
+  type: "Dropout"
+  bottom: "fc7"
+  top: "fc7"
+  dropout_param {
+    dropout_ratio: 0.5
+  }
+}
+layer {
+  name: "fc8"
+  type: "InnerProduct"
+  bottom: "fc7"
+  top: "fc8"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 101
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "fc8"
+  bottom: "label"
+  top: "loss"
+}
+I0603 15:06:14.756870  3238 layer_factory.hpp:77] Creating layer data
+I0603 15:06:14.756903  3238 net.cpp:91] Creating Layer data
+I0603 15:06:14.756911  3238 net.cpp:399] data -> data
+I0603 15:06:14.756948  3238 net.cpp:399] data -> label
+I0603 15:06:14.756963  3238 data_transformer.cpp:25] Loading mean file from: examples/c3d_ucf101/ucf101_train_mean.binaryproto
+I0603 15:06:14.761948  3238 blob.cpp:501] legacy C3D proto detected
+I0603 15:06:14.768641  3238 video_data_layer.cpp:39] Opening file examples/c3d_ucf101/c3d_ucf101_train_split1.txt
+I0603 15:06:14.806222  3238 video_data_layer.cpp:53] Shuffling data
+I0603 15:06:14.815277  3238 video_data_layer.cpp:58] A total of 107258 video chunks.
+E0603 15:06:14.815330  3238 io.cpp:169] Could not open or find file /media/TB/Videos/UCF-101/BrushingTeeth/v_BrushingTeeth_g19_c03.avi
+F0603 15:06:14.815490  3238 video_data_layer.cpp:77] Check failed: read_video_result Could not load /media/TB/Videos/UCF-101/BrushingTeeth/v_BrushingTeeth_g19_c03.avi at frame 561.
+*** Check failure stack trace: ***
+    @     0x7fdacb5e4dbd  google::LogMessage::Fail()
+    @     0x7fdacb5e6c5d  google::LogMessage::SendToLog()
+    @     0x7fdacb5e49ac  google::LogMessage::Flush()
+    @     0x7fdacb5e757e  google::LogMessageFatal::~LogMessageFatal()
+    @     0x7fdacbcd4514  caffe::VideoDataLayer<>::DataLayerSetUp()
+    @     0x7fdacbc3ced3  caffe::BasePrefetchingDataLayer<>::LayerSetUp()
+    @     0x7fdacbd486bc  caffe::Net<>::Init()
+    @     0x7fdacbd49545  caffe::Net<>::Net()
+    @     0x7fdacbd178ea  caffe::Solver<>::InitTrainNet()
+    @     0x7fdacbd189ec  caffe::Solver<>::Init()
+    @     0x7fdacbd18d1a  caffe::Solver<>::Solver()
+    @     0x7fdacbd2c793  caffe::Creator_SGDSolver<>()
+    @           0x40e91e  caffe::SolverRegistry<>::CreateSolver()
+    @           0x407ac2  train()
+    @           0x40594c  main
+    @     0x7fdaca8f7ec5  (unknown)
+    @           0x406081  (unknown)
